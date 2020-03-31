@@ -1,51 +1,42 @@
 ---
 # Tasks specific for RedHat systems
+- block:
 
-- name: "RedHat | Use Zabbix package name"
-  set_fact:
-    zabbix_server_package: "zabbix-server-{{ zabbix_server_database }}"
-  when:
-    - zabbix_repo == "zabbix" or zabbix_repo == "other"
-  tags:
-    - zabbix-server
+  - name: "RedHat | Use Zabbix package name"
+    set_fact:
+      zabbix_server_package: "zabbix-server-{{ zabbix_server_database }}"
+    when:
+      - zabbix_repo == "zabbix" or zabbix_repo == "other"
 
-- name: "RedHat | Use EPEL package name"
-  set_fact:
-    zabbix_server_package: "zabbix{{ zabbix_short_version }}-server-{{ zabbix_server_database }}"
-  when:
+  - name: "RedHat | Use EPEL package name"
+    set_fact:
+      zabbix_server_package: "zabbix{{ zabbix_short_version }}-server-{{ zabbix_server_database }}"
+    when:
     - zabbix_repo == "epel"
-  tags:
-    - zabbix-server
 
-- name: "RedHat | Set some facts EPEL"
-  set_fact:
-    datafiles_path: "/usr/share/zabbix-{{ zabbix_server_database_long }}"
-  when:
-    - zabbix_repo == "epel"
-  tags:
-    - zabbix-server
+  - name: "RedHat | Set some facts EPEL"
+    set_fact:
+      datafiles_path: "/usr/share/zabbix-{{ zabbix_server_database_long }}"
+    when:
+      - zabbix_repo == "epel"
 
-- name: "RedHat | Set some facts Zabbix < 3.0"
-  set_fact:
-    datafiles_path: "/usr/share/doc/zabbix-server-{{ zabbix_server_database }}-{{ zabbix_version }}*"
-  when:
-    - zabbix_version is version('3.0', '<')
-  tags:
-    - zabbix-server
+  - name: "RedHat | Set some facts Zabbix < 3.0"
+    set_fact:
+      datafiles_path: "/usr/share/doc/zabbix-server-{{ zabbix_server_database }}-{{ zabbix_version }}*"
+    when:
+      - zabbix_version is version('3.0', '<')
 
-- name: "RedHat | Set facts for Zabbix >= 3.0"
-  set_fact:
-    datafiles_path: "/usr/share/doc/zabbix-server-{{ zabbix_server_database }}-{{ zabbix_version }}*"
-  when:
-    - zabbix_version is version('3.0', '>=')
-  tags:
-    - zabbix-server
+  - name: "RedHat | Set facts for Zabbix >= 3.0"
+    set_fact:
+      datafiles_path: "/usr/share/doc/zabbix-server-{{ zabbix_server_database }}-{{ zabbix_version }}*"
+    when:
+      - zabbix_version is version('3.0', '>=')
 
-- name: "RedHat | Set facts for RHEL8"
-  set_fact:
-    datafiles_path: "/usr/share/doc/zabbix-server-{{ zabbix_server_database }}"
-  when:
-    - ansible_distribution_major_version == "8"
+  - name: "RedHat | Set facts for RHEL8"
+    set_fact:
+      datafiles_path: "/usr/share/doc/zabbix-server-{{ zabbix_server_database }}"
+    when:
+      - ansible_distribution_major_version == "8"
   tags:
     - zabbix-server
 
