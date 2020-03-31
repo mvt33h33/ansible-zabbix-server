@@ -12,7 +12,7 @@
     set_fact:
       zabbix_server_package: "zabbix{{ zabbix_short_version }}-server-{{ zabbix_server_database }}"
     when:
-    - zabbix_repo == "epel"
+      - zabbix_repo == "epel"
 
   - name: "RedHat | Set some facts EPEL"
     set_fact:
@@ -44,7 +44,7 @@
   file:
     path: /etc/yum.repos.d/zabbix-supported.repo
     state: absent
-  become: yes
+  become: true
 
 - name: "RedHat | Install basic repo file"
   yum_repository:
@@ -167,8 +167,8 @@
 - name: "RedHat | Enable httpd_can_connect_zabbix SELinux boolean"
   seboolean:
     name: httpd_can_connect_zabbix
-    state: yes
-    persistent: yes
+    state: true
+    persistent: true
   when:
     - selinux_allow_zabbix_can_http
     - zabbix_selinux | bool
@@ -178,8 +178,8 @@
 - name: "RedHat | Enable zabbix_can_network SELinux boolean"
   seboolean:
     name: zabbix_can_network
-    state: yes
-    persistent: yes
+    state: true
+    persistent: true
   when:
     - selinux_allow_zabbix_can_network
     - zabbix_selinux | bool
